@@ -1,2 +1,143 @@
+@theme "~/.config/rofi/themes/theme.rasi"
 
-@theme "/usr/share/rofi/themes/arthur.rasi"
+configuration {
+    modi:                        "drun,filebrowser,window,run";
+
+    show-icons:                  true;
+
+    display-drun:                "";
+    display-run:                 "";
+    display-filebrowser:         "";
+    display-window:              "";
+
+    drun-display-format:         "{name} [<span weight='light' size='small'>{generic}</span>]";
+    window-format:               "{w}{t}";
+
+    font:                        "Source Code Pro 10";
+    icon-theme:                  "Tela-circle-dracula";
+}
+
+window {
+    location:                    center;
+    anchor:                      center;
+
+    transparency:                "real";
+    fullscreen:                  false;
+
+    padding:                     10px;
+    spacing:                     0px;
+
+    border:                      2px;
+    border-radius:               15px;
+    border-color:                @main-br;
+
+    background-color:            @main-bg;
+
+    children:                    [ "mainbox" ];
+}
+
+mainbox {
+    orientation:                 vertical;
+    spacing:                     0px;
+    padding:                     0px;
+
+    children:                    [ "inputbar", "listview" ];
+
+    background-color:            transparent;
+}
+
+
+inputbar {
+    spacing:                     10px;
+    padding:                     11px;
+
+    children:                    [ "textbox-prompt-colon", "entry" ];
+
+    border:                      2px;
+    border-radius:               15px 15px 0px 0px;
+    border-color:                @main-ex;
+
+    background-color:            @main-bg;
+}
+
+textbox-prompt-colon {
+    enabled:                     false;
+}
+
+entry {
+    background-color:            transparent;
+
+    text-color:                  @main-fg;
+
+    placeholder:                 "looking for something...?";
+    placeholder-color:           @main-fg;
+
+    cursor:                      text;
+}
+
+listview {
+    lines:                       10;
+    dynamic:                     false;
+
+    columns:                     1;
+    cycle:                       true;
+
+    scrollbar:                   false;
+
+    padding:                     8px;
+
+    border:                      2px;
+    border-radius:               0px 0px 15px 15px;
+    border-color:                @main-ex;
+
+    background-color:            @main-bg;
+
+    text-color:                  @main-fg;
+}
+
+element {
+    padding:                     4px;
+    spacing:                     10px;
+
+    cursor:                      pointer;
+
+    border-radius:               8px;
+
+    background-color:            transparent;
+    text-color:                  @main-fg;
+}
+
+element selected.normal {
+    background-color:            @select-bg;
+    text-color:                  @select-fg;
+}
+
+element-icon {
+    enabled:                     true;
+    size:                        1.8em;
+
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+
+    padding:                     0.7em;
+}
+
+mode-switcher {
+    enabled:                     false;
+}
+
+button {
+    background-color:            transparent;
+}
+
+button selected {
+    background-color:            transparent;
+}
