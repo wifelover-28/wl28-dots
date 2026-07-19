@@ -1,0 +1,440 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    show_song_table_header: false,
+    draw_borders: true,
+    browser_column_widths: [0, 40, 100],
+    background_color: None,
+    modal_backdrop: false,
+    text_color: "#00EEFF",
+    header_background_color: None,
+    modal_background_color: None,
+    preview_label_style: (fg: "#e6e1e7"),
+    preview_metadata_group_style: (fg: "#e6e1e7"),
+    song_table_album_separator: None,
+    tab_bar: (
+        enabled: false,
+        active_style: (fg: "#141317", bg: "#e6e1e7", modifiers: "Bold"),
+        inactive_style: (),
+    ),
+    highlighted_item_style: (fg: "#00EEFF", modifiers: "Bold"),
+    current_item_style: (fg: "#FF00CC", bg: "#00EEFF", modifiers: "Bold"),
+    borders_style: (fg: "#00EEFF", modifiers: "Bold"),
+    highlight_border_style: (fg: "#FF00CC"),
+    symbols: (song: "󰝚 ", dir: " ", playlist: "󰲸 ", marker: " ", ellipsis: "...",
+        song_style: (fg: "#00EEFF"), dir_style: (fg: "#00EEFF")
+    ),
+    progress_bar: (
+        symbols: ["-", "", "-"],//["-", "", "-"],
+        track_style: (fg: "#FF00CC"),
+        elapsed_style: (fg: "#00EEFF"),
+        thumb_style: (fg: "#FF00CC"),
+        use_track_when_empty: false,
+    ),
+    scrollbar: (
+        symbols: ["", "", "", ""],
+        track_style: (),
+        ends_style: (),
+        thumb_style: (fg: "#FFFFFF"),
+    ),
+    song_table_format: [
+        (
+            prop: (
+                kind: Property(Title),
+                style: (fg: "#FFFFFF"),
+                default: (
+                    kind: Property(Filename),
+                    style: (fg: "#FFFFFF")
+                )
+            ),
+            width: "60%",
+        ),
+        (
+            prop: (
+                kind: Property(Artist),
+                style: (fg: "#FFFFFF"),
+                default: (
+                    kind: Text("Unknown Artist"),
+                    style: (fg: "#FFFFFF")
+                )
+            ),
+            width: "35%",
+            alignment: Right
+        ),
+        (
+            prop: (
+                kind: Property(Duration),
+                style: (fg: "#FFFFFF"),
+                default: (
+                    kind: Text("-")
+                )
+            ),
+            width: "5%",
+            alignment: Right
+        ),
+    ],
+    layout: Split(
+        direction: Vertical,
+        panes: [
+            (
+                size: "100%",
+                borders: "NONE",
+                pane: Pane(TabContent)
+            ),
+            (
+                size: "1",
+                pane: Pane(ProgressBar)
+            ),
+            (
+                size: "2",
+                borders: "NONE",
+                pane: Component("custom-header")
+            ),
+        ]
+    ),
+    header: (rows: []),
+    browser_song_format: [
+        (
+            kind: Group(
+                [
+                    (kind: Property(Track)),
+                    (kind: Text(" ")),
+                ]
+            )
+        ),
+        (kind: Group(
+                [
+                    (kind: Property(Artist)),
+                    (kind: Text(" - ")),
+                    (kind: Property(Title)),
+                ]
+            ),
+            default: (kind: Property(Filename))
+        )
+    ],
+    level_styles: (
+        info: (fg: "blue", bg: "black"),
+        warn: (fg: "yellow", bg: "black"),
+        error: (fg: "red", bg: "black"),
+        debug: (fg: "light_green", bg: "black"),
+        trace: (fg: "white", bg: "black"),
+    ),
+    components: {
+        "custom-header":
+            Split(
+                direction: Horizontal,
+                panes: [
+        (
+            size: "50%",
+            pane: Split(
+                direction: Vertical,
+                panes: [
+                    (
+                    size: "100%",
+                    pane: Pane(
+                        Property(
+                            content: [
+                        (
+                            kind: Property(
+                                Status(
+                                    StateV2(
+                                        playing_label: " ",
+                                        paused_label: " ",
+                                        stopped_label: " "
+                                    )
+                                )
+                            ),
+                            style: (fg: "#FFFFFF")
+                            ),
+                            (
+                                kind: Property(
+                                    Song(Artist)
+                                ),
+                                style: (fg: "#e6e1e7"),
+                                default: (
+                                    kind: Text("Unknown Artist"),
+                                    style: (fg: "#FFFFFF")
+                                )
+                            ),
+                            (
+                                kind: Text(" - "),
+                                style: (fg: "#FFFFFF")
+                            ),
+                            (
+                                kind: Property(
+                                    Song(Title)
+                                ),
+                                style: (
+                                    fg: "#FFFFFF",
+                                    modifiers: "Bold"
+                                ),
+                                default: (
+                                    kind: Property(
+                                        Song(Filename)
+                                    ),
+                                    style: (
+                                        fg: "#FFFFFF",
+                                        modifiers: "Bold"
+                                    )
+                                )
+                            )
+                        ],
+                        align: Left
+                    )
+                )
+            ),
+            (
+                size: "100%",
+                pane: Pane(
+                    Property(
+                        content: [
+                            (
+                                kind: Text("  "),
+                                style: (fg: "#FFFFFF")
+                            ),
+                            (
+                                kind: Property(
+                                    Song(Album)
+                                    ),
+                                style: (fg: "#FFFFFF",
+                                modifiers: "Dim")
+                            ),
+                            (
+                                kind: Text("  "),
+                                style: (fg: "#FFFFFF")
+                            ),
+                            (
+                                kind: Property(
+                                    Song(FileExtension)
+                                ),
+                                style: (
+                                    fg: "#FFFFFF",
+                                    modifiers: "Dim"
+                                ),
+                                default: (
+                                    kind: Text("Unknown Album"),
+                                    style: (
+                                        fg: "#FFFFFF",
+                                        modifiers: "Dim"
+                                    )
+                                )
+                            ),
+                        ],
+                        align: Left
+                    )
+                )
+            ),
+        ])
+),
+(
+    size: "50%",
+    pane: Split(
+        direction: Vertical,
+        panes: [
+            (
+                size: "100%",
+                pane: Pane(
+                    Property(
+                        content: [
+                            (
+                                kind: Property(
+                                    Status(
+                                        RepeatV2(
+                                            on_label: " ",
+                                            off_label: " ",
+                                            on_style: (
+                                                fg: "#FF00CC",
+                                                modifiers: "Bold"
+                                            ),
+                                            off_style: (
+                                                fg: "#FFFFFF",
+                                                modifiers: "Bold"
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            (
+                                kind: Text(" ⦁ "),
+                                style: (
+                                    fg: "#00EECC",
+                                    modifiers: "Bold"
+                                )
+                            ),
+                            (
+                                kind: Property(
+                                    Status(
+                                        RandomV2(
+                                            on_label: " ",
+                                            off_label: " ",
+                                            on_style: (
+                                                fg: "#FF00CC",
+                                                modifiers: "Bold"
+                                            ),
+                                            off_style: (
+                                                fg: "#FFFFFF",
+                                                modifiers: "Bold"
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            (
+                                kind: Text(" ⦁ "),
+                                style: (
+                                    fg: "#00EECC",
+                                    modifiers: "Bold"
+                                )
+                            ),
+                            (
+                                kind: Property(
+                                    Status(
+                                        ConsumeV2(
+                                            on_label: "󰮯 ",
+                                            off_label: "󰮯 ",
+                                            oneshot_label: "󰮯󰇊 ",
+                                            on_style: (
+                                                fg: "#FF00CC",
+                                                modifiers: "Bold"
+                                            ),
+                                            off_style: (
+                                                fg: "#FFFFFF",
+                                                modifiers: "Bold"
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            (
+                                kind: Text(" ⦁"),
+                                style: (
+                                    fg: "#00EECC",
+                                    modifiers: "Bold"
+                                )
+                            ),
+                            (
+                                kind: Property(
+                                    Status(
+                                        SingleV2(
+                                            on_label: " 󰴙 ",
+                                            off_label: " 󱏦 ",
+                                            oneshot_label: " 󰐊 ",
+                                            off_oneshot_label: "  ",
+                                            on_style: (
+                                                fg: "#FF00CC",
+                                                modifiers: "Bold"
+                                            ),
+                                            off_style: (
+                                                fg: "#FFFFFF",
+                                                modifiers: "Bold"
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                        ],
+                        align: Right
+                    )
+                )
+            ),
+                                (
+                                    size: "100%",
+                                    pane: Pane(
+                                Property(
+                                    content: [
+                                    (
+                                        kind: Property(
+                                            Status(SampleRate())
+                                        ),
+                                        style: (
+                                            fg: "#FFFFFF",
+                                            modifiers: "Dim"
+                                        )
+                                    ),
+                                    (
+                                        kind: Text(" hz"),
+                                        style: (
+                                            fg: "#FFFFFF",
+                                            modifiers: "Dim"
+                                        )
+                                    ),
+                                    (
+                                        kind: Text(" ⦁ "),
+                                        style: (
+                                            fg: "#FFFFFF",
+                                            modifiers: "Dim"
+                                        )
+                                    ),
+                                        (
+                                            kind: Property(
+                                                Status(Bitrate)
+                                            ),
+                                            style: (
+                                                fg: "#FFFFFF",
+                                                modifiers: "Dim"
+                                            )
+                                        ),
+                                        (
+                                            kind: Text(" kbps"),
+                                            style: (
+                                                fg: "#FFFFFF",
+                                                modifiers: "Dim"
+                                            )
+                                        ),
+                                        (
+                                            kind: Text(" ⦁ "),
+                                            style: (
+                                                fg: "#FFFFFF",
+                                                modifiers: "Dim"
+                                            )
+                                        ),
+                                        (
+                                            kind: Property(
+                                                Status(Elapsed)
+                                            ),
+                                            style: (
+                                                fg: "#e6e1e7",
+                                                modifiers: "Dim"
+                                            )
+                                        ),
+                                        (
+                                            kind: Text(" - "),
+                                            style: (
+                                                fg: "#e6e1e7",
+                                                modifiers: "Dim"
+                                            )
+                                        ),
+                                        (
+                                            kind: Property(
+                                                Status(Duration)
+                                            ),
+                                            style: (
+                                                fg: "#e6e1e7",
+                                                modifiers: "Dim"
+                                            )
+                                        ),
+                                    ],
+                                    align: Right
+                                )
+                            )
+                        ),
+                    ]
+                )
+            ),
+        ]
+    ),
+
+    },
+    cava: (
+        bar_symbols: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        bar_width: 1,
+        bar_spacing: 3,
+        bar_color: Gradient(
+            	{
+			0: "#00EEFF",
+			100: "#FF00CC",
+		}
+        )
+    ),
+)
